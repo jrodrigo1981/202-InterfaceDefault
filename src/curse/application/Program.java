@@ -1,30 +1,38 @@
 package curse.application;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-
-import curse.entities.ComboDevice;
-import curse.entities.concretPrinter;
-import curse.entities.concretScanner;
+import curse.entities.Employee;
 
 public class Program {
 
 	public static void main(String[] args) {
-
-		concretPrinter p = new concretPrinter("1080");
-		p.processDoc("My letter");
-		p.print("My letter");
+		List<Employee> list = new ArrayList<>();
+		String path = "c:\\temp\\in.txt";
 		
-		concretScanner s = new concretScanner("2003");
-		s.processDoc("my email");
-		System.out.println("Scan result: " + s.scan());
-		
-		System.out.println();
-		
-		ComboDevice c = new ComboDevice("2081");
-		c.processDoc("My dissertation");
-		c.print("My dissertation");
-		System.out.println("Scan result: " + c.scan());
-
+		try(BufferedReader br = new BufferedReader(new FileReader(path))) {
+			String employeeCsv = br.readLine();
+			
+			while(employeeCsv != null) {
+				String[] filds = employeeCsv.split(",");
+				list.add(new Employee(filds[0], Double.parseDouble(filds[1])));
+				employeeCsv = br.readLine();
+			}
+			Collections.sort(list);
+			for(Employee emp : list) {
+				System.out.println(emp.getName() + ", " + emp.getSalary());
+			}
+			
+			
+		}
+		catch (IOException e) {
+			System.out.println("Error: " + e.getMessage());
+		}
 	}
 
 }
