@@ -1,38 +1,32 @@
 package curse.application;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
 
-import curse.entities.Employee;
+import curse.entities.InterestService;
+import curse.entities.UsaInterestService;
+
+
 
 public class Program {
 
 	public static void main(String[] args) {
-		List<Employee> list = new ArrayList<>();
-		String path = "c:\\temp\\in.txt";
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
 		
-		try(BufferedReader br = new BufferedReader(new FileReader(path))) {
-			String employeeCsv = br.readLine();
-			
-			while(employeeCsv != null) {
-				String[] filds = employeeCsv.split(",");
-				list.add(new Employee(filds[0], Double.parseDouble(filds[1])));
-				employeeCsv = br.readLine();
-			}
-			Collections.sort(list);
-			for(Employee emp : list) {
-				System.out.println(emp.getName() + ", " + emp.getSalary());
-			}
-			
-			
-		}
-		catch (IOException e) {
-			System.out.println("Error: " + e.getMessage());
-		}
+		System.out.print("Amount: ");
+		double amount = sc.nextDouble();
+		System.out.print("Months: ");
+		int months = sc.nextInt();
+		
+		InterestService is = new UsaInterestService(1.0);
+		double payment = is.payment(amount, months);
+		
+		System.out.println("Payment after " + months + " months");
+		System.out.println(String.format("%.2f", payment));
+		
+		
+		sc.close();
 	}
 
 }
